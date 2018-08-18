@@ -7,6 +7,7 @@ cc.Class({
         touchLayer:cc.Node,
         gameMenu:cc.Node,
         win:cc.Node,
+        lose:cc.Node,
         help:cc.Node,
         propbg:[cc.SpriteFrame],
     },
@@ -32,7 +33,7 @@ cc.Class({
         this.map.x = -(this.map.width/2);
         this.map.y = -(this.map.height/2);
         this.map.removeAllChildren();
-        let itemdata = this.mapdata.itemData;
+        let itemdata = JSON.parse(JSON.stringify(this.mapdata.itemData));
         for(let i=0; i<itemdata.length; i++){
             let node =cc.instantiate(this.propItem);
             node.parent = this.map;
@@ -251,11 +252,18 @@ cc.Class({
             }
             this.setBreakValue();
         }
+        if(this.roleVale<=0){                //游戏失败
+            this.roleVale = 0;
+            this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
+            this.lose.active = true;        //具体表现会有延迟
+            return;
+        }
         this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
     },
     /**
-     * map子节点类型为1
+     * map子节点类型为1：砖块
      * 且找到与prop_dic[key].id对应的值去做运算
+     * 砖块值《=0，则消除
      */
     setBreakValue(){
         for(let i=0; i<this.map.childrenCount; i++){
@@ -266,6 +274,11 @@ cc.Class({
             if(type!=1)continue;
             for (let key in this.prop_dic) {
                 if(this.prop_dic[key].id ==id){
+                    if(this.prop_dic[key].obj.value<=0){
+                        node.destroy();
+                        delete this.prop_dic[key];          
+                        continue;
+                    }
                     node.getChildByName("label").getComponent(cc.Label).string = this.prop_dic[key].obj.value;
                     break;
                 }
@@ -298,6 +311,7 @@ cc.Class({
     reStart_cb(){
         this.onLoad();
     },
+    //游戏失败的重新开始和菜单的重新开始
     gameMenuRestatr_cb(event){
         event.target.parent.active= false;
         this.onLoad();
