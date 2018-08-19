@@ -418,6 +418,7 @@ cc.Class({
     help_cb() {
         this.help.active = true;
     },
+    //重新开始
     reStart_cb(){
         this.onLoad();
     },
@@ -426,20 +427,30 @@ cc.Class({
         event.target.parent.active= false;
         this.onLoad();
     },
+    //免费提示
     freeTip_cb(){
 
     },
+    //好友帮助
     helpforfriend_cb(){
 
     },
+    //设置
     set_cb(){
         this.gameMenu.active = true;
     },
+    //关闭
     close_cb(event){
         event.target.parent.active= false;
     },
+    //退出当前关卡
     exitCurLevel_cb(){
         cc.director.loadScene("palza");
     },
+    //点击头像
+    head_cb(){
+
+    },
+    
     // update (dt) {},
 });
