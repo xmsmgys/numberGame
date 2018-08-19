@@ -22,9 +22,11 @@ cc.Class({
         this.mapdata = this.curLogic.get("mapdata");
         cc.log("mapdata",this.mapdata);
         this.initMap();
+        this.comparisonSymbol();
         this.bindTouchLayer();
     },
     start () {
+       
     },
     //初始化地图
     initMap(){
@@ -38,6 +40,7 @@ cc.Class({
             let node =cc.instantiate(this.propItem);
             node.parent = this.map;
             node.active = true;
+            node.zIndex =1;
             node.x = itemdata[i].obj.x;
             node.y = itemdata[i].obj.y;
             node.name = `${itemdata[i].id}_${itemdata[i].obj.type}`;
@@ -49,6 +52,8 @@ cc.Class({
             if(type==0){
                 this.role = node;
                 this.roleVale = value;
+                this.role.zIndex = 10;
+                continue;
             }
             let str = `${node.x},${node.y}`
             this.prop_dic[str]=itemdata[i]; //位置对应
@@ -79,6 +84,7 @@ cc.Class({
             case 3:
             case 5:
                     str.string = value.toString() + this.getSimopl(simpol); break;
+            case 8:str.string = simpol==1?"→":"←";break;
             default:node.getChildByName("label").active = false;
                 break;
         }
@@ -176,12 +182,17 @@ cc.Class({
             type = this.prop_dic[str].obj.type;
             value = this.prop_dic[str].obj.value;
             simpol = this.prop_dic[str].obj.simpol;
-        } 
-        if (type == 6) return
-
+        }else{          
+            this.role.position = pos;                            //没碰到障碍物
+            return;
+        }
+        if (type == 6) return                       //碰到无穷
+        let legal = this.checkMove(str);            //移动非法
+        if(!legal)return;
+        
         this.role.position = pos;
-        this.setRoleValue(type,value,simpol);
-        this.removeProp(type,str);
+        this.setRoleValue(type,value,simpol);       //设置砖块或者主角的值
+        this.removeProp(type,str);                  //移除道具
         if (type == 7) {
             this.win.active = true;
         }
@@ -195,6 +206,7 @@ cc.Class({
     setRoleValue(type, value, simpol) {
         if(type == 1){
             this.roleVale = this.roleVale - value;
+            this.comparisonSymbol();                    //改变><=的砖块的状态
         }
         else if (type == 2) {                          //主角-道具
             if (simpol == 1) {
@@ -207,6 +219,7 @@ cc.Class({
             else if (simpol == 4) {
                 this.roleVale = parseInt(this.roleVale / value);
             }
+            this.comparisonSymbol();                    //改变><=的砖块的状态
         } 
         else if (type == 3) {                        //道具-主角
             if (simpol == 1) {
@@ -219,6 +232,7 @@ cc.Class({
             else if (simpol == 4) {
                 this.roleVale = parseInt(value / this.roleVale);
             }
+            this.comparisonSymbol();                    //改变><=的砖块的状态
         } 
         else if (type == 4) {                        //砖块 - 道具
             for (let key in this.prop_dic) {
@@ -232,9 +246,10 @@ cc.Class({
                     } else if (simpol == 4) {
                         this.prop_dic[key].obj.value = parseInt(this.prop_dic[key].obj.value / value);
                     }
+                    this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                 }
             }
-            this.setBreakValue();
+            this.setBreakString();
         } 
         else if (type == 5) {                     //道具 - 砖块 
             for (let key in this.prop_dic) {
@@ -250,7 +265,20 @@ cc.Class({
                     }
                 }
             }
-            this.setBreakValue();
+            this.setBreakString();
+        }
+        else if (type == 8) {
+            if (simpol == 1) {            //改变我的值
+                this.roleVale = this.revnum(this.roleVale);
+                this.comparisonSymbol();                            //改变><=的砖块的状态
+            } else if (simpol == 2) {      //改变砖块的值
+                for (let key in this.prop_dic) {
+                    if (this.prop_dic[key].obj.type == 1) {
+                        this.prop_dic[key].obj.value =this.revnum(this.prop_dic[key].obj.value);
+                    }
+                }
+                this.setBreakString();
+            }
         }
         if(this.roleVale<=0){                //游戏失败
             this.roleVale = 0;
@@ -263,9 +291,9 @@ cc.Class({
     /**
      * map子节点类型为1：砖块
      * 且找到与prop_dic[key].id对应的值去做运算
-     * 砖块值《=0，则消除
+     * 砖块值《=0，则消除 ： 当是-》道具，不适用
      */
-    setBreakValue(){
+    setBreakString(){
         for(let i=0; i<this.map.childrenCount; i++){
             let node = this.map.children[i];
             let arr = node.name.split("_");
@@ -274,7 +302,7 @@ cc.Class({
             if(type!=1)continue;
             for (let key in this.prop_dic) {
                 if(this.prop_dic[key].id ==id){
-                    if(this.prop_dic[key].obj.value<=0){
+                    if(this.prop_dic[key].obj.value == 0){          //当砖块的值=0；移除，这个值会在变化的时候强行设置
                         node.destroy();
                         delete this.prop_dic[key];          
                         continue;
@@ -291,10 +319,17 @@ cc.Class({
      * @param {*} str this.prop_dic  key
      */
     removeProp(type, str) {
-        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5||type ==7) {
+        if(type ==2){       //><=
+            if (this.prop_dic[str].obj.simpol==5||this.prop_dic[str].obj.simpol==6||this.prop_dic[str].obj.simpol==7){
+                return;
+            }
+        }
+        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5||type ==7||type ==8) {
             for (let i = 0; i < this.map.childrenCount; i++) {
+                let arr = this.map.children[i].name.split("_");
+                let id = parseInt(arr[0]);
                 if (this.prop_dic[str]) {
-                    if (parseInt(this.map.children[i].name) == this.prop_dic[str].id) {
+                    if (id == this.prop_dic[str].id) {
                         this.map.children[i].destroy();
                         delete this.prop_dic[str];
                         cc.log("[this.prop_dic]", this.prop_dic)
@@ -303,9 +338,84 @@ cc.Class({
             }
         }
     },
-
+    /**
+     * 遍历所有的道具，更改><=的状态，如果透明度为1，不能经过
+     */
+    comparisonSymbol() {
+        for (let i = 0; i < this.map.childrenCount; i++) {
+            for (let key in this.prop_dic) {
+                let item = this.prop_dic[key]
+                if (item.obj.type == 2) {     //|| item.obj.type == 3
+                    let node = this.map.getChildByName(`${item.id}_${item.obj.type}`);
+                    if (item.obj.simpol == 5) {
+                        if (this.roleVale > item.obj.value) {
+                            node.opacity = 125;
+                        } else {
+                            node.opacity = 255;
+                        }
+                    } else if (item.obj.simpol == 6) {
+                        if (this.roleVale < item.obj.value) {
+                            node.opacity = 125;
+                        } else {
+                            node.opacity = 255;
+                        }
+                    } else if (item.obj.simpol == 7) {
+                        if (this.roleVale == item.obj.value) {
+                            node.opacity = 125;
+                        } else {
+                            node.opacity = 255;
+                        }
+                    }
+                }
+            }
+        }
+    },
+    /**
+     * 检测是否能通过><=的道具
+     * @param {*} key  主角将要移动的位置的道具
+     */
+    checkMove(key) {
+        let legal = false;
+        if (this.prop_dic[key]) {
+            if (this.prop_dic[key].obj.type == 2) {
+                if (this.prop_dic[key].obj.simpol == 5) {
+                    if (this.roleVale > this.prop_dic[key].obj.value) {
+                        legal = true;
+                    }
+                } else if (this.prop_dic[key].obj.simpol == 6) {
+                    if (this.roleVale < this.prop_dic[key].obj.value) {
+                        legal = true;
+                    }
+                } else if (this.prop_dic[key].obj.simpol == 7) {
+                    if (this.roleVale == this.prop_dic[key].obj.value) {
+                        legal = true;
+                    }
+                }else{
+                    legal = true;
+                }
+            }else{
+                legal = true;
+            }
+        } else {
+            legal = true;
+        }
+        return legal;
+    },
+    //数字反转
+    revnum(num) {
+        let bool = false;
+        if (num < 0) {
+            num = Math.abs(num);
+            bool = true
+        }
+        num = num.toString().split("").reverse();
+        num = num.join("");
+        num = Number(num);
+        num = bool ? -num : num;
+        return num;
+    },
     //=======点击事件的回调
-    help_cb(){
+    help_cb() {
         this.help.active = true;
     },
     reStart_cb(){

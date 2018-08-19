@@ -169,13 +169,12 @@ cc.Class({
         }
         switch (type) {
             case 0:
-            case 1: prop.string = value.toString();break;
+            case 1: prop.string = value.toString(); break;
             case 2:
-            case 4:
-            prop.string = this.getSimopl(simpol) +value.toString() ; break;
+            case 4:prop.string = this.getSimopl(simpol) + value.toString(); break;
             case 3:
-            case 5:
-            prop.string = value.toString() + this.getSimopl(simpol); break;
+            case 5:prop.string = value.toString() + this.getSimopl(simpol); break;
+            case 8:prop.string = simpol == 1 ? "→" : "←";break;
             default:
                 break;
         }

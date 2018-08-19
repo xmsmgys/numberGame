@@ -282,6 +282,140 @@
 				],
 				"height": 400,
 				"width": 400
+			},
+			{
+				"level": 4,
+				"itemData": [
+					{
+						"id": 0,
+						"obj": {
+							"x": 0,
+							"y": 100,
+							"type": 0,
+							"value": 10,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 1,
+						"obj": {
+							"x": 200,
+							"y": 300,
+							"type": 2,
+							"value": 5,
+							"simpol": 5
+						}
+					},
+					{
+						"id": 2,
+						"obj": {
+							"x": 200,
+							"y": 200,
+							"type": 2,
+							"value": 15,
+							"simpol": 6
+						}
+					},
+					{
+						"id": 3,
+						"obj": {
+							"x": 200,
+							"y": 100,
+							"type": 2,
+							"value": 10,
+							"simpol": 7
+						}
+					},
+					{
+						"id": 4,
+						"obj": {
+							"x": 100,
+							"y": 200,
+							"type": 2,
+							"value": 6,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 5,
+						"obj": {
+							"x": 100,
+							"y": 300,
+							"type": 2,
+							"value": 12,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 6,
+						"obj": {
+							"x": 200,
+							"y": 0,
+							"type": 2,
+							"value": 9,
+							"simpol": 7
+						}
+					}
+				],
+				"height": 400,
+				"width": 400
+			},
+			{
+				"level": 5,
+				"itemData": [
+					{
+						"id": 0,
+						"obj": {
+							"x": 0,
+							"y": 100,
+							"type": 8,
+							"value": 123,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 1,
+						"obj": {
+							"x": 200,
+							"y": 100,
+							"type": 0,
+							"value": 123,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 2,
+						"obj": {
+							"x": 200,
+							"y": 300,
+							"type": 8,
+							"value": 123,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 3,
+						"obj": {
+							"x": 0,
+							"y": 300,
+							"type": 1,
+							"value": 123,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 4,
+						"obj": {
+							"x": 100,
+							"y": 200,
+							"type": 8,
+							"value": 123,
+							"simpol": 2
+						}
+					}
+				],
+				"height": 400,
+				"width": 400
 			}
 		]
 	}
