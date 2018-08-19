@@ -51,7 +51,6 @@ cc.Class({
         this.mapdata = this.levelsData[0];
         this.level = this.mapdata.level;
         this.itemData = this.mapdata.itemData;
-        this.propID = this.itemData.length;
         this.setMapSize(this.mapdata.width,this.mapdata.height);
         this.drawItem();
         this.inteditBoxString();
@@ -115,6 +114,7 @@ cc.Class({
     drawItem() {
         this.mapBg.removeAllChildren();
         this.setMapSize(this.mapdata.width, this.mapdata.height);
+        this.propID = this.itemData.length;
         for (let i = 0; i < this.itemData.length; i++) {
             this.prop = cc.instantiate(this.propGroup.children[this.itemData[i].obj.type]);
             this.prop.name = `${this.itemData[i].id}_${this.itemData[i].obj.type}`;
@@ -128,7 +128,6 @@ cc.Class({
             this.updateViewValue();
         }
     },
-  
     setvalue(node){
         let arr = this.prop.name.split("_");
         let type = arr[1];
