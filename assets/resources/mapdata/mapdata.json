@@ -22,7 +22,7 @@
 							"y": 100,
 							"type": 1,
 							"value": 1,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{
@@ -42,7 +42,7 @@
 							"y": 200,
 							"type": 1,
 							"value": 4,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{
@@ -89,7 +89,7 @@
 							"y": 300,
 							"type": 1,
 							"value": 10,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{
@@ -99,7 +99,7 @@
 							"y": 200,
 							"type": 1,
 							"value": 10,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{
@@ -109,7 +109,7 @@
 							"y": 100,
 							"type": 1,
 							"value": 10,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{
@@ -119,7 +119,7 @@
 							"y": 0,
 							"type": 1,
 							"value": 10,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{
@@ -229,7 +229,7 @@
 							"y": 300,
 							"type": 1,
 							"value": 15,
-							"simpol": 1
+							"simpol": 2
 						}
 					}
 				],
@@ -276,7 +276,7 @@
 							"y": 100,
 							"type": 1,
 							"value": 10,
-							"simpol": 0
+							"simpol": 2
 						}
 					}
 				],
@@ -400,7 +400,7 @@
 							"y": 300,
 							"type": 1,
 							"value": 123,
-							"simpol": 1
+							"simpol": 2
 						}
 					},
 					{

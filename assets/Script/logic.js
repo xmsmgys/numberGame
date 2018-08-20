@@ -19,6 +19,7 @@ gameLogic.CONST = {
     }
 };
 gameLogic.resetData = function () {
+    this.Development = true;            //开发模式
     this.difficultData = {};
     this.mapdata = {};
     this.levelListState = 0;            //有没有打开关卡列表
@@ -26,11 +27,20 @@ gameLogic.resetData = function () {
     // this.diff
     this.readJson();
 }
-gameLogic.readJson = function(){
-    fileutil.readJSON("mapdata").then(data=>{
-        this.difficultData = data;
-        emitter.emit("getdifficultData");
-    })
+gameLogic.readJson = function () {
+    if (this.Development) {
+        console.log("post")
+        this.PSOT("http://192.168.1.117:8081/downfd", { ph: "mapdata.json" }, (data) => {
+            this.difficultData = JSON.parse(data.fd);
+            emitter.emit("getdifficultData");
+           
+        })
+    } else {
+        fileutil.readJSON("mapdata").then(data => {
+            this.difficultData = data;
+            emitter.emit("getdifficultData");
+        })
+    }
 },
 gameLogic.get = function (key) {
     return this[key];
@@ -38,6 +48,28 @@ gameLogic.get = function (key) {
 gameLogic.set = function (key, value) {
     this[key] = value;
 };
+//******************* */
+gameLogic.PSOT = function (route, msg, next) {
+    let xhr = cc.loader.getXMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 300)) {
+            let respone = xhr.responseText;
+            let pone = JSON.parse(respone);
+            console.log("post ", pone)
+            next(pone);
+        }
+    };
+    // note: In Internet Explorer, the timeout property may be set only after calling the open()
+    // method and before calling the send() method.
+    xhr.timeout = 5000;
+    xhr.onerror = (error) => {
+        console.log("出错啦 http.POST ...")
+    }
+    console.log("http.POST 发送数据: ", route, msg)
+    xhr.open("POST", route, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+    xhr.send(JSON.stringify(msg));
+},
 module.exports.getInstance = function(){
     if(!g_instance){
         g_instance = new GameLogic();

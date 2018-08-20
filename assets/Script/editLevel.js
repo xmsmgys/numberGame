@@ -30,7 +30,7 @@ cc.Class({
         this.mapdata = {};          //关卡N的数据
         this.difficultData = [];    //总的数据
         this.difficultItem = {};
-       
+        
         this.initMap();
     },
     start () {
@@ -46,6 +46,7 @@ cc.Class({
     },
     initMap(){
         this.difficultData = this.curLogic.get("difficultData");
+        if(JSON.stringify( this.difficultData) == "{}")return;
         this.difficult = this.difficultData[0].difficult;
         this.levelsData = this.difficultData[0].levelsData;
         this.mapdata = this.levelsData[0];
@@ -189,6 +190,7 @@ cc.Class({
             case 5:string = ">";break;
             case 6:string = "<";break;
             case 7:string = "=";break;
+            case 8:string = "≠";break;
             default: string ="";break;
         }
         return string;
@@ -232,7 +234,11 @@ cc.Class({
         itemData.obj.y = this.prop.y;
         itemData.obj.type = parseInt(this.prop.name);
         itemData.obj.value = parseInt(this.editbox_value.string);
-        itemData.obj.simpol = parseInt(this.editbox_simpol.string);
+        if(itemData.obj.type == 1){
+            itemData.obj.simpol = 2;
+        }else{
+            itemData.obj.simpol = parseInt(this.editbox_simpol.string);
+        }
         this.prop.name = `${this.propID}_${parseInt(this.prop.name)}`;
         this.itemData.push(itemData);
         this.updateViewValue();
@@ -321,10 +327,11 @@ cc.Class({
         this.mapdata.width = this.mapBg.width;
         this.levelsData.push(this.mapdata);            //要导出的数据
     },
-
+    //导出
     put_cb(){
-        let str = JSON.stringify(this.difficultData);
-        this.Copy(str)
+        this.curLogic.PSOT("http://192.168.1.117:8081/upfd",{fn:"mapdata.json",fd:JSON.stringify(this.difficultData)}, (data) =>{
+            console.log(data);
+        })
     },
     back_cb(){
         cc.director.loadScene("palza");
@@ -338,7 +345,10 @@ cc.Class({
         document.execCommand('copy');
         document.removeEventListener('copy', save);
     },
-    
+
+  
+
+
     // update (dt) {},
 });
 

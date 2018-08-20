@@ -123,6 +123,7 @@ cc.Class({
             case 5:string = ">";break;
             case 6:string = "<";break;
             case 7:string = "=";break;
+            case 8:string = "≠";break;
             default: string ="";break;
         }
         return string;
@@ -146,10 +147,9 @@ cc.Class({
             break;
         }
     },
-    //触摸监听回调
+    //***************触摸监听回调*****************
     clickCallBack(event){
         this.startPos = event.getLocation();
-        cc.log("star",this.startPos);
     },
     moveCallBack(event){
 
@@ -161,19 +161,15 @@ cc.Class({
         if(AbsoluteX>AbsoluteY){
             if(AbsoluteX<20)return;
             if(this.startPos.x>this.endPos.x){
-                cc.log("向左",this.endPos)
                 this.roleMove(1);
             }else{
-                cc.log("向右",this.endPos)
                 this.roleMove(2);
             }
         }else{
             if(AbsoluteY<20)return;
             if(this.startPos.y>this.endPos.y){
-                cc.log("向下",this.endPos)
                 this.roleMove(3);
             }else{
-                cc.log("向上",this.endPos)
                 this.roleMove(4);
             }
         }
@@ -227,8 +223,10 @@ cc.Class({
      * @param {*} simpol 道具的运算符号
      */
     setRoleValue(type, value, simpol) {
+        let tempValue = this.roleVale;
         if(type == 1){
             this.roleVale = this.roleVale - value;
+            this.ani_roleString(tempValue,value,simpol,type);
             this.comparisonSymbol();                    //改变><=的砖块的状态
         }
         else if (type == 2) {                          //主角-道具
@@ -309,7 +307,7 @@ cc.Class({
             this.lose.active = true;        //具体表现会有延迟
             return;
         }
-        this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
+        // this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
     },
     /**
      * map子节点类型为1：砖块
@@ -362,7 +360,7 @@ cc.Class({
         }
     },
     /**
-     * 遍历所有的道具，更改><=的状态，如果透明度为1，不能经过
+     * 遍历所有的道具，更改><=≠的状态，如果透明度为1，不能经过
      */
     comparisonSymbol() {
         for (let i = 0; i < this.map.childrenCount; i++) {
@@ -388,6 +386,12 @@ cc.Class({
                         } else {
                             node.opacity = 255;
                         }
+                    }else if(item.obj.simpol == 8) {
+                        if (this.roleVale != item.obj.value) {
+                            node.opacity = 125;
+                        } else {
+                            node.opacity = 255;
+                        }
                     }
                 }
             }
@@ -398,7 +402,7 @@ cc.Class({
      * @param {*} key  主角将要移动的位置的道具
      */
     checkMove(key) {
-        let legal = false;
+        let legal = false;                  //移动是否合法
         if (this.prop_dic[key]) {
             if (this.prop_dic[key].obj.type == 2) {
                 if (this.prop_dic[key].obj.simpol == 5) {
@@ -437,7 +441,7 @@ cc.Class({
         num = bool ? -num : num;
         return num;
     },
-    //=======点击事件的回调
+    //*************点击事件的回调****************
     help_cb() {
         this.help.active = true;
     },
@@ -486,6 +490,24 @@ cc.Class({
             }
         }
        //解锁新刮关卡，跳到相应的关卡选择界面
+    },
+
+    //*********Ani************ 
+    ani_roleString(value1,value2,_simpol,type){
+        let simpol = this.getSimopl(_simpol);
+        let node = this.role.getChildByName("label");
+        if(type == 1||type ==2){
+            node.getComponent(cc.Label).string = `${value1}${simpol}${value2}`;
+        }else if(type == 3){
+            node.getComponent(cc.Label).string= `${value2}${simpol}${value1}`;
+        }
+        let actionTo = cc.scaleTo(0.3, 0, 1);
+        let DTY  = cc.delayTime(0.25);
+        let callfunc = cc.callFunc(()=>{
+            node.scaleX = 1;
+            node.getComponent(cc.Label).string = this.roleVale;
+        })
+        node.runAction(cc.sequence(actionTo,DTY,callfunc));
     },
     // update (dt) {},
 });
