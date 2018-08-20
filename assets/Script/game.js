@@ -9,6 +9,7 @@ cc.Class({
         win:cc.Node,
         lose:cc.Node,
         help:cc.Node,
+        info:cc.Node,
         propbg:[cc.SpriteFrame],
     },
 
@@ -16,12 +17,18 @@ cc.Class({
 
     onLoad () {
         this.role = null;
+        this.setpcount = 0;
         this.prop_dic = {};
         this.roleVale = 0;
         this.curLogic = require("logic").getInstance();
         this.mapdata = this.curLogic.get("mapdata");
+        this.difficult = this.curLogic.get("difficultState");
+        this.difficultData = this.curLogic.get("difficultData");
+        this.levelsData = this.difficultData[i].levelsData;
+        this.level = this.mapdata.level;
         cc.log("mapdata",this.mapdata);
         this.initMap();
+        this.initInfo();
         this.comparisonSymbol();
         this.bindTouchLayer();
     },
@@ -58,6 +65,20 @@ cc.Class({
             let str = `${node.x},${node.y}`
             this.prop_dic[str]=itemdata[i]; //位置对应
         }
+    },
+    initInfo(){
+        let info_level = this.info.children[0].getChildByName("level");
+        let info_difficult = this.info.children[0].getChildByName("difficult");
+        let info_setpCount = this.info.children[1].getChildByName("count");
+        let info_gold = this.info.children[2].getChildByName("coin");
+        info_difficult.getComponent(cc.Label).string = this.curLogic.CONST.difficult[this.difficult];
+        info_level.getComponent(cc.Label).string = `-${this.level}`;
+        info_setpCount.getComponent(cc.Label).string = this.setpcount;
+    },
+    updataSetpCount(){
+        this.setpcount ++;
+        let info_setpCount = this.info.children[1].getChildByName("count");
+        info_setpCount.getComponent(cc.Label).string = this.setpcount;
     },
     //绑定点击层
     bindTouchLayer(){
@@ -184,6 +205,7 @@ cc.Class({
             simpol = this.prop_dic[str].obj.simpol;
         }else{          
             this.role.position = pos;                            //没碰到障碍物
+            this.updataSetpCount();
             return;
         }
         if (type == 6) return                       //碰到无穷
@@ -191,6 +213,7 @@ cc.Class({
         if(!legal)return;
         
         this.role.position = pos;
+        this.updataSetpCount();
         this.setRoleValue(type,value,simpol);       //设置砖块或者主角的值
         this.removeProp(type,str);                  //移除道具
         if (type == 7) {
@@ -451,6 +474,18 @@ cc.Class({
     head_cb(){
 
     },
-    
+    //继续
+    continue_cb(event){
+        for(let i=0; i<this.levelsData.length; i++){
+            if(this.levelsData[i].level == this.level+1){
+                let mapdata = this.levelsData[i]
+                this.curLogic.set("mapdata",mapdata);
+                event.target.parent.active= false;
+                this.onLoad();
+                return;
+            }
+        }
+       //解锁新刮关卡，跳到相应的关卡选择界面
+    },
     // update (dt) {},
 });

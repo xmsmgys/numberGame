@@ -9,11 +9,21 @@ let
 
 
 //--------------
+gameLogic.CONST = {
+    difficult:{
+        1:"初出茅庐",
+        2:"小试牛刀",
+        3:"渐入佳境",
+        4:"锋芒毕露",
+        5:"头脑强者",
+    }
+};
 gameLogic.resetData = function () {
     this.difficultData = {};
     this.mapdata = {};
-    this.levelListState = 0;
-    this.difficultState = null;
+    this.levelListState = 0;            //有没有打开关卡列表
+    this.difficultState = null;         //关卡难度
+    // this.diff
     this.readJson();
 }
 gameLogic.readJson = function(){
