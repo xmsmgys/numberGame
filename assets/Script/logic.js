@@ -31,7 +31,9 @@ gameLogic.readJson = function () {
     if (this.Development) {
         console.log("post")
         this.PSOT("http://192.168.1.117:8081/downfd", { ph: "mapdata.json" }, (data) => {
+            cc.log("!!!!!!!",data.fd)
             this.difficultData = JSON.parse(data.fd);
+            cc.log("!!!!!!!",this.difficultData)
             emitter.emit("getdifficultData");
            
         })

@@ -507,6 +507,7 @@ cc.Class({
             node.scaleX = 1;
             node.getComponent(cc.Label).string = this.roleVale;
         })
+        node.stopAllActions();
         node.runAction(cc.sequence(actionTo,DTY,callfunc));
     },
     // update (dt) {},

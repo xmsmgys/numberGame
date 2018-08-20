@@ -47,8 +47,8 @@ cc.Class({
             node.on("touchstart", this.clickCallBack, this);
             node.parent = this.content;
             node.active = true;
-            node.getChildByName("number").getComponent(cc.Label).string = i+1;
-            node.name = `${i+1}`;
+            node.getChildByName("number").getComponent(cc.Label).string = `${this.levelsData[i].level}`;
+            node.name = `${this.levelsData[i].level}`;
         }
     },
     editMap_cb(){

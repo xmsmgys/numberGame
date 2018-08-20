@@ -329,6 +329,7 @@ cc.Class({
     },
     //导出
     put_cb(){
+        console.log(this.difficultData);
         this.curLogic.PSOT("http://192.168.1.117:8081/upfd",{fn:"mapdata.json",fd:JSON.stringify(this.difficultData)}, (data) =>{
             console.log(data);
         })
