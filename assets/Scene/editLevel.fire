@@ -3933,7 +3933,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "save",
+    "_name": "deleteLevel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -4058,7 +4058,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "保存",
+    "_N$string": "删除关卡",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -4164,7 +4164,7 @@
       "__id__": 2
     },
     "component": "editLevel",
-    "handler": "save_cb",
+    "handler": "deleteLevel_cb",
     "customEventData": ""
   },
   {
@@ -4294,7 +4294,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "重置",
+    "_N$string": "重置关卡",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -4453,7 +4453,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -142,
-      "y": 338
+      "y": 210.4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4925,7 +4925,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -144,
-      "y": 206
+      "y": 339.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4954,9 +4954,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -5002,7 +5002,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "删除",
+    "_N$string": "删除单个",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",

@@ -108,9 +108,18 @@ cc.Class({
         this.mapdata.itemData = this.itemData;
         this.mapdata.height = this.mapBg.height;
         this.mapdata.width = this.mapBg.width;
-        this.levelsData.push(this.mapdata);            //要导出的数据
+        let push = false;
+        for (let key in this.levelsData) {
+            if (this.levelsData[key].level > this.level) {
+                this.levelsData.splice(key, 0, this.mapdata);
+                push = true;
+            }
+        }
+        if (!push) {
+            this.levelsData.push(this.mapdata);
+        }
         this.drawItem();
-    },  
+    }, 
     //绘制关卡
     drawItem() {
         this.mapBg.removeAllChildren();
@@ -124,7 +133,7 @@ cc.Class({
             this.prop.height = PROPSIZE;
             this.prop.x = this.itemData[i].obj.x;
             this.prop.y = this.itemData[i].obj.y;
-            this.pos_dict[this.prop.position] = this.prop.position;
+            this.pos_dict[`${this.prop.x},${this.prop.y}`] = this.prop.position;
             this.prop.on("touchstart", this.clickProp, this);
             this.updateViewValue();
         }
@@ -252,7 +261,7 @@ cc.Class({
             node.destroy();
             return;
         }
-        let bool = this.checkSameProp();    //检测唯一道具是否唯一
+        let bool = this.checkSameProp(node);    //检测唯一道具是否唯一
         if(!bool){
             node.destroy();
             return;
@@ -264,34 +273,38 @@ cc.Class({
         let OffsetX = pos.x % PROPSIZE;
         x = OffsetX > PROPSIZE/2 ? x + 1 : x;
         let pos1 = cc.p(x*PROPSIZE,y*PROPSIZE);
+        let str = `${x*PROPSIZE},${y*PROPSIZE}`
         node.setPosition(pos1);
-        if(this.pos_dict[pos1]){            //位置是否唯一
+        if(this.pos_dict[str]){            //位置是否唯一
             node.destroy();
         }else{
-            this.pos_dict[pos1] = pos1;
+            this.pos_dict[str] = pos1;
         }
     },
 
-    checkSameProp(){
+    checkSameProp(node){
         let mycount = 0 ;
         let starcount = 0 ;
-        for(let i=0; i<this.mapBg.childrenCount; i++){
-            let arr = this.mapBg.children[i].name.split("_");
-            let type = parseInt(arr[1]);
-            if (type == 0) {
-                mycount++;
-                if (mycount > 1) {
-                    return false;
+        if(node.name == "0"){
+            for(let i=0; i<this.mapBg.childrenCount; i++){
+                let arr = this.mapBg.children[i].name.split("_");
+                let type = parseInt(arr[1]);
+                if (type == 0) {
+                    mycount++;
+                    if (mycount > 0) {
+                        return false;
+                    }
                 }
             }
-        }
-        for(let i=0; i<this.mapBg.childrenCount; i++){
-            let arr = this.mapBg.children[i].name.split("_");
-            let type = parseInt(arr[1]);
-            if (type == 7) {
-                starcount++;
-                if (starcount > 1) {
-                    return false;
+        }else if(node.name == "7"){
+            for(let i=0; i<this.mapBg.childrenCount; i++){
+                let arr = this.mapBg.children[i].name.split("_");
+                let type = parseInt(arr[1]);
+                if (type == 7) {
+                    starcount++;
+                    if (starcount > 0) {
+                        return false;
+                    }
                 }
             }
         }
@@ -306,11 +319,22 @@ cc.Class({
         let id = arr[0];
         for(let i=0; i<this.itemData.length; i++){
             if(this.itemData[i].id == id){
+                let str = `${this.itemData[i].obj.x},${this.itemData[i].obj.y}`
                 this.itemData.splice(i,1);
+                delete this.pos_dict[str];
             }
         }
         this.prop.destroy();
         cc.log("this.mapdata",this.mapdata)
+    },
+    deleteLevel_cb(){
+        for(let key in this.levelsData){
+            if(this.levelsData[key].level == this.level){
+                this.levelsData.splice(key,1);
+                this.initMap();
+                return;
+            }
+        }
     },
     reset_cb(){
         this.pos_dict={};

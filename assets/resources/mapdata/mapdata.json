@@ -355,6 +355,16 @@
 							"value": 9,
 							"simpol": 7
 						}
+					},
+					{
+						"id": 7,
+						"obj": {
+							"x": 300,
+							"y": 300,
+							"type": 2,
+							"value": 4,
+							"simpol": 8
+						}
 					}
 				],
 				"height": 400,
@@ -430,6 +440,40 @@
 							"y": 200,
 							"type": 6,
 							"value": 1,
+							"simpol": 1
+						}
+					}
+				],
+				"height": 400,
+				"width": 400
+			},
+			{
+				"level": 6,
+				"itemData": [
+					{
+						"id": 0,
+						"obj": {
+							"x": 200,
+							"y": 100,
+							"type": 0,
+							"value": 6,
+							"simpol": 1
+						}
+					}
+				],
+				"height": 400,
+				"width": 400
+			},
+			{
+				"level": 7,
+				"itemData": [
+					{
+						"id": 0,
+						"obj": {
+							"x": 200,
+							"y": 100,
+							"type": 0,
+							"value": 7,
 							"simpol": 1
 						}
 					}
