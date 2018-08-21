@@ -226,7 +226,7 @@ cc.Class({
         let tempValue = this.roleVale;
         if (type == 1) {
             this.roleVale = this.roleVale - value;
-            this.ani_propString(this.role,tempValue, value, simpol, type);
+            this.ani_propString(this.role,tempValue, value, simpol,type,this.roleVale);
             this.comparisonSymbol();
         }
         else if (type == 2) {                          //主角-道具
@@ -240,7 +240,7 @@ cc.Class({
             else if (simpol == 4) {
                 this.roleVale = parseInt(this.roleVale / value);
             }
-            this.ani_propString(this.role,tempValue, value, simpol, type);
+            this.ani_propString(this.role,tempValue, value, simpol, type,this.roleVale);
             this.comparisonSymbol();
         }
         else if (type == 3) {                        //道具-主角
@@ -254,12 +254,12 @@ cc.Class({
             else if (simpol == 4) {
                 this.roleVale = parseInt(value / this.roleVale);
             }
-            this.ani_propString(this.role,tempValue, value, simpol, type);
+            this.ani_propString(this.role,tempValue, value, simpol, type,this.roleVale);
             this.comparisonSymbol();
         }
         else if (type == 4) {                        //砖块 - 道具
             for (let key in this.prop_dic) {
-                tempValue = this.prop_dic[key];
+                tempValue = this.prop_dic[key].obj.value;
                 if (this.prop_dic[key].obj.type == 1) {
                     if (simpol == 1) {
                         this.prop_dic[key].obj.value = this.prop_dic[key].obj.value + value;
@@ -273,14 +273,13 @@ cc.Class({
                     this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
                     let node = this.getBreakNode(this.prop_dic[key].id);
-                    this.ani_propString(node,tempValue,value,simpol,type)
+                    this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value)
                 }
             }
-            // this.setBreakString();
         }
         else if (type == 5) {                     //道具 - 砖块 
             for (let key in this.prop_dic) {
-                cc.log("this.prop_dic[key].obj.type,",this.prop_dic[key].obj.type,this.prop_dic[key].id)
+                tempValue = this.prop_dic[key].obj.value;
                 if (this.prop_dic[key].obj.type == 1) {
                     if (simpol == 1) {
                         this.prop_dic[key].obj.value = value + this.prop_dic[key].obj.value;
@@ -294,10 +293,9 @@ cc.Class({
                     this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
                     let node = this.getBreakNode(this.prop_dic[key].id);
-                    this.ani_propString(node,tempValue,value,simpol,type)
+                    this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value)
                 }
             }
-            // this.setBreakString();
         }
         else if (type == 8) {
             if (simpol == 1) {            //改变我的值
@@ -319,7 +317,6 @@ cc.Class({
             this.lose.active = true;        //具体表现会有延迟
             return;
         }
-        // this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
     },
     /**
      * map子节点类型为1：砖块
@@ -375,7 +372,6 @@ cc.Class({
                     if (id == this.prop_dic[str].id) {
                         this.map.children[i].destroy();
                         delete this.prop_dic[str];
-                        cc.log("[this.prop_dic]", this.prop_dic)
                     }
                 }
             }
@@ -515,21 +511,23 @@ cc.Class({
     },
 
     //*********Ani************ 
-    ani_propString(_node,value1,value2,_simpol,type){
+    ani_propString(_node,value1,value2,_simpol,type,calculationvalue){
         let simpol = this.getSimopl(_simpol);
         let node = _node.getChildByName("label");
-        if(type == 1||type ==2){
+        node.stopAllActions();
+        node.scaleX = 1;
+        if(type == 1||type ==2 ||type == 4){
             node.getComponent(cc.Label).string = `${value1}${simpol}${value2}`;
-        }else if(type == 3){
+            
+        }else if(type == 3 ||type == 5){
             node.getComponent(cc.Label).string= `${value2}${simpol}${value1}`;
         }
         let actionTo = cc.scaleTo(0.3, 0, 1);
         let DTY  = cc.delayTime(0.25);
         let callfunc = cc.callFunc(()=>{
             node.scaleX = 1;
-            node.getComponent(cc.Label).string = this.roleVale;
+            node.getComponent(cc.Label).string = calculationvalue;
         })
-        node.stopAllActions();
         node.runAction(cc.sequence(actionTo,DTY,callfunc));
     },
     // update (dt) {},
