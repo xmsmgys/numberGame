@@ -451,12 +451,142 @@
 				"level": 6,
 				"itemData": [
 					{
-						"id": 0,
+						"id": 1,
+						"obj": {
+							"x": 0,
+							"y": 200,
+							"type": 6,
+							"value": 1,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 2,
+						"obj": {
+							"x": 100,
+							"y": 200,
+							"type": 6,
+							"value": 1,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 3,
+						"obj": {
+							"x": 100,
+							"y": 300,
+							"type": 1,
+							"value": 29,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 4,
+						"obj": {
+							"x": 0,
+							"y": 300,
+							"type": 7,
+							"value": 29,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 5,
+						"obj": {
+							"x": 339,
+							"y": 336.5,
+							"type": 0,
+							"value": 29,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 6,
+						"obj": {
+							"x": 300,
+							"y": 300,
+							"type": 0,
+							"value": 10,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 7,
 						"obj": {
 							"x": 200,
+							"y": 300,
+							"type": 2,
+							"value": 2,
+							"simpol": 4
+						}
+					},
+					{
+						"id": 8,
+						"obj": {
+							"x": 300,
 							"y": 100,
-							"type": 0,
-							"value": 6,
+							"type": 2,
+							"value": 3,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 9,
+						"obj": {
+							"x": 300,
+							"y": 0,
+							"type": 2,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 10,
+						"obj": {
+							"x": 200,
+							"y": 0,
+							"type": 2,
+							"value": 8,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 11,
+						"obj": {
+							"x": 100,
+							"y": 0,
+							"type": 2,
+							"value": 3,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 12,
+						"obj": {
+							"x": 100,
+							"y": 100,
+							"type": 2,
+							"value": 3,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 13,
+						"obj": {
+							"x": 0,
+							"y": 100,
+							"type": 2,
+							"value": 2,
+							"simpol": 3
+						}
+					},
+					{
+						"id": 14,
+						"obj": {
+							"x": 0,
+							"y": 0,
+							"type": 2,
+							"value": 5,
 							"simpol": 1
 						}
 					}
@@ -468,18 +598,178 @@
 				"level": 7,
 				"itemData": [
 					{
-						"id": 0,
+						"id": 1,
+						"obj": {
+							"x": 0,
+							"y": 200,
+							"type": 6,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 2,
+						"obj": {
+							"x": 100,
+							"y": 200,
+							"type": 6,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 3,
+						"obj": {
+							"x": 300,
+							"y": 200,
+							"type": 6,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 4,
+						"obj": {
+							"x": 200,
+							"y": 200,
+							"type": 6,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 5,
+						"obj": {
+							"x": 400,
+							"y": 200,
+							"type": 6,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 6,
+						"obj": {
+							"x": 400,
+							"y": 100,
+							"type": 6,
+							"value": 5,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 7,
+						"obj": {
+							"x": 300,
+							"y": 0,
+							"type": 0,
+							"value": 1,
+							"simpol": 1
+						}
+					},
+					{
+						"id": 8,
+						"obj": {
+							"x": 300,
+							"y": 100,
+							"type": 3,
+							"value": 18,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 9,
 						"obj": {
 							"x": 200,
 							"y": 100,
-							"type": 0,
+							"type": 3,
+							"value": 18,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 10,
+						"obj": {
+							"x": 500,
+							"y": 100,
+							"type": 1,
 							"value": 7,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 11,
+						"obj": {
+							"x": 500,
+							"y": 200,
+							"type": 1,
+							"value": 6,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 12,
+						"obj": {
+							"x": 500,
+							"y": 300,
+							"type": 1,
+							"value": 5,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 13,
+						"obj": {
+							"x": 400,
+							"y": 300,
+							"type": 1,
+							"value": 4,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 14,
+						"obj": {
+							"x": 300,
+							"y": 300,
+							"type": 1,
+							"value": 3,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 15,
+						"obj": {
+							"x": 200,
+							"y": 300,
+							"type": 1,
+							"value": 2,
+							"simpol": 2
+						}
+					},
+					{
+						"id": 16,
+						"obj": {
+							"x": 100,
+							"y": 300,
+							"type": 1,
+							"value": 1,
 							"simpol": 1
+						}
+					},
+					{
+						"id": 17,
+						"obj": {
+							"x": 0,
+							"y": 300,
+							"type": 7,
+							"value": 18,
+							"simpol": 2
 						}
 					}
 				],
 				"height": 400,
-				"width": 400
+				"width": 600
 			}
 		]
 	}
