@@ -1,4 +1,5 @@
 const PROPSIZE = 100;   //渲染道具的尺寸
+let CONFIGS = require("const");
 cc.Class({
     extends: cc.Component,
 
@@ -24,7 +25,7 @@ cc.Class({
         this.simpol = null;
         this.prop = null;
         this.bindPrpoEvent();
-        this.pos_dict={};
+        this.pos_dict={};           //位置字典
         this.itemData = [];         //道具的数据
         this.levelsData = [];       //难度1下的所有关卡
         this.mapdata = {};          //关卡N的数据
@@ -44,6 +45,7 @@ cc.Class({
         this.mapdata.height = parseInt(arr[1])*PROPSIZE;
         this.setMapSize(this.mapdata.width,this.mapdata.height)
     },
+    //初始化地图
     initMap(){
         this.difficultData = this.curLogic.get("difficultData");
         if(JSON.stringify( this.difficultData) == "{}")return;
@@ -56,15 +58,18 @@ cc.Class({
         this.drawItem();
         this.inteditBoxString();
     },
+    //初始化编辑框的string
     inteditBoxString(){
         this.editbox_level.string = this.mapdata.level;
         this.editbox_mapSize.string = `${this.mapdata.width/PROPSIZE},${this.mapdata.height/PROPSIZE}`;
         this.editbox_difficult.string = this.difficult;
     },
+    //设置地图宽高
     setMapSize(width,height){
         this.mapBg.width = width;
         this.mapBg.height = height;
     },
+    //设置难度
     setDifficult(node){
         this.difficultItem = {};
         this.pos_dict = {};
@@ -138,6 +143,7 @@ cc.Class({
             this.updateViewValue();
         }
     },
+    //设置值
     setvalue(node){
         let arr = this.prop.name.split("_");
         let type = arr[1];
@@ -152,7 +158,7 @@ cc.Class({
         }
         this.updateViewValue();
     },
-
+    //设置符号
     setsimpol(node) {
         let arr = this.prop.name.split("_");
         let id = arr[0];
@@ -163,7 +169,7 @@ cc.Class({
         }
         this.updateViewValue();
     },
-
+    //更新道具的视图
     updateViewValue(){
         let arr = this.prop.name.split("_");
         let id = arr[0];
@@ -188,7 +194,7 @@ cc.Class({
                 break;
         }
     },
-
+    //得到符号
     getSimopl(simpol){
         let string;
         switch(simpol){
@@ -204,6 +210,7 @@ cc.Class({
         }
         return string;
     },
+    //绑定道具的点击事件
     bindPrpoEvent(){
         for(let i=0; i<this.propGroup.childrenCount; i++){
             let node = this.propGroup.children[i];
@@ -213,7 +220,7 @@ cc.Class({
             node.on("touchcancel", this.moveCancelCB, this);
         }
     },
-
+    //*************点击回调**************
     clickCallBack(event){
         this.prop =  cc.instantiate(event.target);
         this.prop.on("touchstart", this.clickProp, this);
@@ -233,7 +240,6 @@ cc.Class({
         this.setPropPosition(this.prop,this.prop.position);
     },
 
-    //itemlist =[{id:1, obj:null}]
     moveCancelCB(event) {
         this.setPropPosition(this.prop, this.prop.position);
         let itemData = {};
@@ -256,6 +262,7 @@ cc.Class({
     clickProp(event){
         this.prop = event.target;
     },
+    //设置道具位置
     setPropPosition(node,pos){
         if(pos.x<0||pos.y<0){               //出界
             node.destroy();
@@ -281,7 +288,7 @@ cc.Class({
             this.pos_dict[str] = pos1;
         }
     },
-
+    //检车是否有主角或者星星（唯一道具）
     checkSameProp(node){
         let mycount = 0 ;
         let starcount = 0 ;
@@ -310,10 +317,7 @@ cc.Class({
         }
         return true;
     },
-
-    save_cb(){
-
-    },
+    //删除单个道具的回调
     delete_cb(){
         let arr = this.prop.name.split("_");
         let id = arr[0];
@@ -327,6 +331,7 @@ cc.Class({
         this.prop.destroy();
         cc.log("this.mapdata",this.mapdata)
     },
+    //删除单个关卡的回调
     deleteLevel_cb(){
         for(let key in this.levelsData){
             if(this.levelsData[key].level == this.level){
@@ -336,6 +341,7 @@ cc.Class({
             }
         }
     },
+    //重置关卡的回调
     reset_cb(){
         this.pos_dict={};
         this.propID = 0;
@@ -358,9 +364,11 @@ cc.Class({
             console.log(data);
         })
     },
+    //返回
     back_cb(){
         cc.director.loadScene("palza");
     },
+    //复制字符串到剪切板
     Copy(str) {
         var save = function (e) {
             e.clipboardData.setData('text/plain', str);
@@ -370,10 +378,6 @@ cc.Class({
         document.execCommand('copy');
         document.removeEventListener('copy', save);
     },
-
-  
-
-
     // update (dt) {},
 });
 

@@ -19,7 +19,7 @@ gameLogic.CONST = {
     }
 };
 gameLogic.resetData = function () {
-    this.Development = false;            //开发模式
+    this.Development = true;            //开发模式
     this.difficultData = {};
     this.mapdata = {};
     this.levelListState = 0;            //有没有打开关卡列表
