@@ -11,6 +11,8 @@ cc.Class({
         help:cc.Node,
         info:cc.Node,
         propbg:[cc.SpriteFrame],
+        ruleProItem:[cc.Node],
+        rule_content:cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -18,6 +20,7 @@ cc.Class({
     onLoad () {
         this.role = null;
         this.setpcount = 0;
+        this.isprotective = false;
         this.prop_dic = {};
         this.roleVale = 0;
         this.curLogic = require("logic").getInstance();
@@ -135,20 +138,7 @@ cc.Class({
      */
     setPropBg(type,node){
         let sprite = node.getChildByName("bg").getComponent(cc.Sprite);
-        switch(type){
-            case 0:sprite.spriteFrame = this.propbg[0];break;
-            case 1:sprite.spriteFrame = this.propbg[1];break;
-            case 2:sprite.spriteFrame = this.propbg[0];break;
-            case 3:sprite.spriteFrame = this.propbg[0];break;
-            case 4:sprite.spriteFrame = this.propbg[1];break;
-            case 5:sprite.spriteFrame = this.propbg[1];break;
-            case 6:sprite.spriteFrame = this.propbg[6];break;
-            case 7:sprite.spriteFrame = this.propbg[7];break;
-            case 8:sprite.spriteFrame = this.propbg[0];break;
-            case 9:sprite.spriteFrame = this.propbg[1];break;
-            default: 
-            break;
-        }
+        sprite.spriteFrame = this.propbg[type];
     },
     //***************触摸监听回调*****************
     clickCallBack(event){
@@ -228,6 +218,10 @@ cc.Class({
     setRoleValue(type, value, simpol) {
         let tempValue = this.roleVale;
         if (type == 1) {
+            if(this.isprotective){
+                this.isprotective = false;
+                return;
+            }
             this.roleVale = this.roleVale - value;
             this.ani_propString(this.role,tempValue, value, simpol,type,this.roleVale);
             this.comparisonSymbol();
@@ -243,6 +237,7 @@ cc.Class({
             else if (simpol == 4) {
                 this.roleVale = parseInt(this.roleVale / value);
             }
+            if(simpol ==5||simpol ==6||simpol ==7||simpol ==8)return;
             this.ani_propString(this.role,tempValue, value, simpol, type,this.roleVale);
             this.comparisonSymbol();
         }
@@ -315,6 +310,8 @@ cc.Class({
                 }
             }
             
+        }else if(type == 10){
+            this.isprotective = true;
         }
         if (this.roleVale <= 0) {                //游戏失败
             this.roleVale = 0;
@@ -369,7 +366,7 @@ cc.Class({
                 return;
             }
         }
-        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 7 || type == 8 ||type == 9) {
+        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 7 || type == 8 ||type == 9||type == 10) {
             for (let i = 0; i < this.map.childrenCount; i++) {
                 let arr = this.map.children[i].name.split("_");
                 let id = parseInt(arr[0]);
@@ -470,7 +467,17 @@ cc.Class({
     },
     //*************点击事件的回调****************
     help_cb() {
+        this.rule_content.removeAllChildren();
         this.help.active = true;
+        let itemdata = JSON.parse(JSON.stringify(this.mapdata.itemData));
+        let dic_node = {};
+        for(let i=0; i<itemdata.length; i++){
+            if(dic_node[itemdata[i].obj.type])continue;
+            dic_node[itemdata[i].obj.type] = itemdata[i].obj.type;
+            let node = cc.instantiate(this.ruleProItem[itemdata[i].obj.type])
+            node.parent = this.rule_content;
+            node.active = true;
+        }
     },
     //重新开始
     reStart_cb(){

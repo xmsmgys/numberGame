@@ -355,9 +355,19 @@ cc.Class({
         }
         this.mapdata.level = this.level;            //如果没有，则
         this.mapdata.itemData = [];
+        this.itemData = this.mapdata.itemData;
         this.mapdata.height = this.mapBg.height;
         this.mapdata.width = this.mapBg.width;
-        this.levelsData.push(this.mapdata);            //要导出的数据
+        let push = false;
+        for (let key in this.levelsData) {
+            if (this.levelsData[key].level > this.level) {
+                this.levelsData.splice(key, 0, this.mapdata);
+                push = true;
+            }
+        }
+        if (!push) {
+            this.levelsData.push(this.mapdata);
+        }
     },
     //导出
     put_cb(){
