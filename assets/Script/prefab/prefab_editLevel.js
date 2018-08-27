@@ -190,6 +190,7 @@ cc.Class({
             case 3:
             case 5:prop.string = value.toString() + this.getSimopl(simpol); break;
             case 8:prop.string = simpol == 1 ? "→" : "←";break;
+            case 9:prop.string = simpol == 1 ? "→" : "←";break;
             default:
                 break;
         }
@@ -336,6 +337,7 @@ cc.Class({
         for(let key in this.levelsData){
             if(this.levelsData[key].level == this.level){
                 this.levelsData.splice(key,1);
+                this.pos_dict={};
                 this.initMap();
                 return;
             }
@@ -359,7 +361,7 @@ cc.Class({
     },
     //导出
     put_cb(){
-        console.log(this.difficultData);
+        console.log(JSON.stringify(this.difficultData));
         this.curLogic.PSOT("http://192.168.1.117:8081/upfd",{fn:"mapdata.json",fd:JSON.stringify(this.difficultData)}, (data) =>{
             console.log(data);
         })

@@ -105,7 +105,8 @@ cc.Class({
             case 3:
             case 5:
                     str.string = value.toString() + this.getSimopl(simpol); break;
-            case 8:str.string = simpol==1?"→":"←";break;
+            case 8:str.string ="→";break;
+            case 9:str.string ="→";break;
             default:node.getChildByName("label").active = false;
                 break;
         }
@@ -137,12 +138,14 @@ cc.Class({
         switch(type){
             case 0:sprite.spriteFrame = this.propbg[0];break;
             case 1:sprite.spriteFrame = this.propbg[1];break;
-            case 2:sprite.spriteFrame = this.propbg[2];break;
-            case 3:sprite.spriteFrame = this.propbg[3];break;
-            case 4:sprite.spriteFrame = this.propbg[4];break;
-            case 5:sprite.spriteFrame = this.propbg[5];break;
+            case 2:sprite.spriteFrame = this.propbg[0];break;
+            case 3:sprite.spriteFrame = this.propbg[0];break;
+            case 4:sprite.spriteFrame = this.propbg[1];break;
+            case 5:sprite.spriteFrame = this.propbg[1];break;
             case 6:sprite.spriteFrame = this.propbg[6];break;
             case 7:sprite.spriteFrame = this.propbg[7];break;
+            case 8:sprite.spriteFrame = this.propbg[0];break;
+            case 9:sprite.spriteFrame = this.propbg[1];break;
             default: 
             break;
         }
@@ -273,7 +276,8 @@ cc.Class({
                     this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
                     let node = this.getBreakNode(this.prop_dic[key].id);
-                    this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value)
+                    this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value);
+                    this.setBreakString();
                 }
             }
         }
@@ -293,23 +297,24 @@ cc.Class({
                     this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
                     let node = this.getBreakNode(this.prop_dic[key].id);
-                    this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value)
+                    this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value);
+                    this.setBreakString();
                 }
             }
         }
         else if (type == 8) {
-            if (simpol == 1) {            //改变我的值
-                this.roleVale = this.revnum(this.roleVale);
-                this.comparisonSymbol();                            //改变><=的砖块的状态
-            } else if (simpol == 2) {      //改变砖块的值
-                for (let key in this.prop_dic) {
-                    if (this.prop_dic[key].obj.type == 1) {
-                        this.prop_dic[key].obj.value = this.revnum(this.prop_dic[key].obj.value);
-                    }
+            this.roleVale = this.revnum(this.roleVale);
+            this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
+            this.comparisonSymbol();   
+        }else if (type == 9){
+            for (let key in this.prop_dic) {
+                if (this.prop_dic[key].obj.type == 1) {
+                    this.prop_dic[key].obj.value = this.revnum(this.prop_dic[key].obj.value);
+                    let node = this.getBreakNode(this.prop_dic[key].id);
+                    node.getChildByName("label").getComponent(cc.Label).string = this.prop_dic[key].obj.value;
                 }
-                let node = this.getBreakNode(this.prop_dic[key].id);
-                node.getChildByName("label").getComponent(cc.Label).string = this.prop_dic[key].obj.value;
             }
+            
         }
         if (this.roleVale <= 0) {                //游戏失败
             this.roleVale = 0;
@@ -332,7 +337,7 @@ cc.Class({
             if (proptype != 1) continue;
             for (let key in this.prop_dic) {
                 if (this.prop_dic[key].id == id) {
-                    if (this.prop_dic[key].obj.value == 0) {          //当砖块的值=0；移除，这个值会在变化的时候强行设置
+                    if (this.prop_dic[key].obj.value < 0) {          //当砖块的值=0；移除，这个值会在变化的时候强行设置
                         node.destroy();
                         delete this.prop_dic[key];
                         continue;
@@ -359,12 +364,12 @@ cc.Class({
      * @param {*} str this.prop_dic  key
      */
     removeProp(type, str) {
-        if (type == 2) {       //><=
-            if (this.prop_dic[str].obj.simpol == 5 || this.prop_dic[str].obj.simpol == 6 || this.prop_dic[str].obj.simpol == 7) {
+        if (type == 2) {       //><=≠
+            if (this.prop_dic[str].obj.simpol == 5 || this.prop_dic[str].obj.simpol == 6 || this.prop_dic[str].obj.simpol == 7|| this.prop_dic[str].obj.simpol == 8) {
                 return;
             }
         }
-        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 7 || type == 8) {
+        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 7 || type == 8 ||type == 9) {
             for (let i = 0; i < this.map.childrenCount; i++) {
                 let arr = this.map.children[i].name.split("_");
                 let id = parseInt(arr[0]);
@@ -433,6 +438,10 @@ cc.Class({
                     }
                 } else if (this.prop_dic[key].obj.simpol == 7) {
                     if (this.roleVale == this.prop_dic[key].obj.value) {
+                        legal = true;
+                    }
+                }else if (this.prop_dic[key].obj.simpol == 8) {
+                    if (this.roleVale != this.prop_dic[key].obj.value) {
                         legal = true;
                     }
                 }else{
