@@ -28,6 +28,8 @@ gameLogic.resetData = function () {
 };
 gameLogic.readLocalData = function(){
     let getLocalData = localStorage.getItem('localData'); // 读取字符串数据
+    console.log("getLocalData",getLocalData);
+    if(!getLocalData) return null;
     let jsonObj = JSON.parse(getLocalData);
     return jsonObj;
 },
@@ -47,6 +49,7 @@ gameLogic.readJson = function () {
     } else {
         fileutil.readJSON("mapdata").then(data => {
             this.difficultData = data;
+            cc.log("!!!!!!!",this.difficultData)
             emitter.emit("getdifficultData");
         })
     }

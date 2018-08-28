@@ -207,7 +207,7 @@ cc.Class({
         this.setRoleValue(type,value,simpol);       //设置砖块或者主角的值
         this.removeProp(type,str);                  //移除道具
         if (type == 7) {
-            if(this.level == 1){
+            if(this.level == 8){
                 this.allPass.active = true;
             }else{
                 this.win.active = true;

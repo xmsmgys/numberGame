@@ -46,7 +46,9 @@ cc.Class({
     },
     initDiffState(){
         let localData = this.curLogic.readLocalData();
+        cc.log("localData",localData);
         for(let i=0 ;i<this.node_diff.childrenCount; i++){
+            console.log(i)
             if(!localData){
                 if(i==0){
                    this.node_diff.children[i].getComponent(cc.Button).interactable = true;
