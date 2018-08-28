@@ -5,6 +5,8 @@ cc.Class({
     properties: {
         levels:cc.Node,
         content :cc.Node,
+        node_diff:cc.Node,
+        editlevel:cc.Node,
     },
 
     // use this for initialization
@@ -14,6 +16,8 @@ cc.Class({
         this.difficult = null;
         this.difficultData = this.curLogic.get("difficultData");
         this.levelsData = [];
+        this.initDiffState();
+        this.initEditLevel();
         this.isshowLevels();
     },
     isshowLevels(){
@@ -27,6 +31,10 @@ cc.Class({
     resetdifficultData(){
         this.difficultData = this.curLogic.get("difficultData");
     },
+    initEditLevel(){
+        let Development = this.curLogic.get("Development");
+        this.editlevel.active = Development;
+    },
     initLevels(event){
         this.curLogic.set("levelListState",1);
         this.curLogic.set("difficultState",parseInt(event.target.name));
@@ -36,7 +44,26 @@ cc.Class({
         this.difficult =parseInt(event.target.name);
         this.DrawView(this.difficult);
     },
+    initDiffState(){
+        let localData = this.curLogic.readLocalData();
+        for(let i=0 ;i<this.node_diff.childrenCount; i++){
+            if(!localData){
+                if(i==0){
+                   this.node_diff.children[i].getComponent(cc.Button).interactable = true;
+                }else{
+                    this.node_diff.children[i].getComponent(cc.Button).interactable = false;
+                }
+            }else{
+                if(i<localData.length){
+                    this.node_diff.children[i].getComponent(cc.Button).interactable = true;
+                }else{
+                    this.node_diff.children[i].getComponent(cc.Button).interactable = false;
+                }
+            }
+        }
+    },
     DrawView(difficult){
+        let localData = this.curLogic.readLocalData();
         for(let i=0; i<this.difficultData.length; i++){
             if(this.difficultData[i].difficult == difficult){
                 this.levelsData = this.difficultData[i].levelsData;
@@ -44,11 +71,30 @@ cc.Class({
         }
         for(let i=0; i<this.levelsData.length; i++){
             let node = cc.instantiate(this.node.getChildByName("levelItem"));
-            node.on("touchstart", this.clickCallBack, this);
             node.parent = this.content;
             node.active = true;
             node.getChildByName("number").getComponent(cc.Label).string = `${this.levelsData[i].level}`;
             node.name = `${this.levelsData[i].level}`;
+            if(!localData){
+                if(i==0){
+                    node.opacity = 255;
+                    node.on("touchstart", this.clickCallBack, this);
+                }else{
+                    node.opacity = 125;
+                }
+            }else{
+                if(!localData[difficult-1].levelData[i]){
+                    if(i<=localData[difficult-1].levelData.length){
+                        node.opacity = 255;
+                        node.on("touchstart", this.clickCallBack, this);
+                    }else{
+                        node.opacity = 125;
+                    }
+                }else{
+                    node.opacity = 255;
+                    node.on("touchstart", this.clickCallBack, this);
+                }
+            }
         }
     },
     editMap_cb(){

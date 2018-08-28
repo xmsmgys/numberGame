@@ -25,7 +25,7 @@ cc.Class({
         this.roleVale = 0;
         this.curLogic = require("logic").getInstance();
         this.mapdata = this.curLogic.get("mapdata");
-        this.difficult = this.curLogic.get("difficultState");
+        this.difficult = this.curLogic.get("difficultState");   //关卡难度
         this.difficultData = this.curLogic.get("difficultData");
         this.levelsData = this.difficultData[i].levelsData;
         this.level = this.mapdata.level;
@@ -207,7 +207,36 @@ cc.Class({
         this.removeProp(type,str);                  //移除道具
         if (type == 7) {
             this.win.active = true;
+            this.pass();
         }
+    },
+    pass(){
+        let localData = this.curLogic.readLocalData();
+        if (!localData) localData = [];
+
+        let difficultData = localData[this.difficult - 1];
+        if (!difficultData) {
+            localData[this.difficult - 1] = {};
+            difficultData = localData[this.difficult - 1];
+        }
+        difficultData.difficult = this.difficult;
+
+        let levelData = localData[this.difficult - 1].levelData;
+        if (!levelData) {
+            localData[this.difficult - 1].levelData = [];
+            levelData = localData[this.difficult - 1].levelData;
+        }
+
+        let leveltate = levelData[this.level - 1];
+        if (!leveltate){
+            levelData[this.level - 1] = {};
+            leveltate = levelData[this.level - 1];
+        } 
+        leveltate.level = this.level;
+        leveltate.star = 3;
+
+        this.curLogic.writeLocalData(localData);
+        cc.log("过关之后的数据",localData);
     },
     /**
      * 碰撞后设置道具的值

@@ -19,14 +19,22 @@ gameLogic.CONST = {
     }
 };
 gameLogic.resetData = function () {
-    this.Development = false;            //开发模式
+    this.Development = true;            //开发模式
     this.difficultData = {};
     this.mapdata = {};
     this.levelListState = 0;            //有没有打开关卡列表
     this.difficultState = null;         //关卡难度
-    // this.diff
     this.readJson();
-}
+};
+gameLogic.readLocalData = function(){
+    let getLocalData = localStorage.getItem('localData'); // 读取字符串数据
+    let jsonObj = JSON.parse(getLocalData);
+    return jsonObj;
+},
+gameLogic.writeLocalData = function(data){
+    let str_jsonData = JSON.stringify(data);
+    localStorage.setItem('localData', str_jsonData); // 存储字符串数据到本地
+},
 gameLogic.readJson = function () {
     if (this.Development) {
         console.log("post")
@@ -35,7 +43,6 @@ gameLogic.readJson = function () {
             this.difficultData = JSON.parse(data.fd);
             cc.log("!!!!!!!",this.difficultData)
             emitter.emit("getdifficultData");
-           
         })
     } else {
         fileutil.readJSON("mapdata").then(data => {
@@ -43,7 +50,7 @@ gameLogic.readJson = function () {
             emitter.emit("getdifficultData");
         })
     }
-},
+};
 gameLogic.get = function (key) {
     return this[key];
 };
