@@ -40,17 +40,20 @@
       },
       {
         "__id__": 312
+      },
+      {
+        "__id__": 351
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 351
+        "__id__": 355
       }
     ],
     "_prefab": {
-      "__id__": 352
+      "__id__": 356
     },
     "_id": "",
     "_opacity": 255,
@@ -11082,6 +11085,109 @@
     "sync": false
   },
   {
+    "__type__": "cc.Node",
+    "_name": "allpass",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": false,
+    "_components": [
+      {
+        "__id__": 352
+      },
+      {
+        "__id__": 353
+      }
+    ],
+    "_prefab": {
+      "__id__": 354
+    },
+    "_id": "",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 851,
+      "height": 627
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 351
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "c8b16270-13e2-4c92-9129-d25d7561a2b8"
+    },
+    "_type": 0,
+    "_sizeMode": 2,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 351
+    },
+    "_enabled": true
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "00ea0904-71e9-49f6-a2e0-fefb19ca4b2d"
+    },
+    "fileId": "f4O5ANjptGl6QHazoDD2KQ",
+    "sync": false
+  },
+  {
     "__type__": "02dc9c8W1RNUYBz0KrtSewO",
     "_name": "",
     "_objFlags": 0,
@@ -11182,6 +11288,9 @@
     ],
     "rule_content": {
       "__id__": 159
+    },
+    "allPass": {
+      "__id__": 351
     }
   },
   {

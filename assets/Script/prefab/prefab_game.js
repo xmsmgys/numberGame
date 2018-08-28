@@ -13,6 +13,7 @@ cc.Class({
         propbg:[cc.SpriteFrame],
         ruleProItem:[cc.Node],
         rule_content:cc.Node,
+        allPass:cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -206,8 +207,12 @@ cc.Class({
         this.setRoleValue(type,value,simpol);       //设置砖块或者主角的值
         this.removeProp(type,str);                  //移除道具
         if (type == 7) {
-            this.win.active = true;
-            this.pass();
+            if(this.level == 1){
+                this.allPass.active = true;
+            }else{
+                this.win.active = true;
+                this.pass();
+            }
         }
     },
     pass(){
@@ -264,7 +269,7 @@ cc.Class({
                 this.roleVale = this.roleVale * value;
             }
             else if (simpol == 4) {
-                this.roleVale = parseInt(this.roleVale / value);
+                this.roleVale = Math.round(this.roleVale / value);
             }
             if(simpol ==5||simpol ==6||simpol ==7||simpol ==8)return;
             this.ani_propString(this.role,tempValue, value, simpol, type,this.roleVale);
@@ -279,7 +284,7 @@ cc.Class({
                 this.roleVale = value * this.roleVale;
             }
             else if (simpol == 4) {
-                this.roleVale = parseInt(value / this.roleVale);
+                this.roleVale = Math.round(value / this.roleVale);
             }
             this.ani_propString(this.role,tempValue, value, simpol, type,this.roleVale);
             this.comparisonSymbol();
@@ -295,7 +300,7 @@ cc.Class({
                     } else if (simpol == 3) {
                         this.prop_dic[key].obj.value = this.prop_dic[key].obj.value * value;
                     } else if (simpol == 4) {
-                        this.prop_dic[key].obj.value = parseInt(this.prop_dic[key].obj.value / value);
+                        this.prop_dic[key].obj.value = Math.round(this.prop_dic[key].obj.value / value);
                     }
                     this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
@@ -316,7 +321,7 @@ cc.Class({
                     } else if (simpol == 3) {
                         this.prop_dic[key].obj.value = value * this.prop_dic[key].obj.value;
                     } else if (simpol == 4) {
-                        this.prop_dic[key].obj.value = parseInt(value / this.prop_dic[key].obj.value);
+                        this.prop_dic[key].obj.value = Math.round(value / this.prop_dic[key].obj.value);
                     }
                     this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
