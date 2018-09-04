@@ -7,10 +7,10 @@ cc.Class({
         editbox_mapSize: cc.EditBox,
         editbox_level:cc.EditBox,
         editbox_value:cc.EditBox,
-        editbox_simpol:cc.EditBox,
         editbox_difficult:cc.EditBox,
         
-        propGroup:cc.Node,
+        prop_content:cc.Node,
+        pageView:cc.Node,
         mapBg:cc.Node,
     },
 
@@ -24,7 +24,8 @@ cc.Class({
         this.value = null;
         this.simpol = null;
         this.prop = null;
-        this.bindPrpoEvent();
+        this.bindAllProp();
+        this.setPageViewMove();
         this.pos_dict={};           //位置字典
         this.itemData = [];         //道具的数据
         this.levelsData = [];       //难度1下的所有关卡
@@ -37,12 +38,38 @@ cc.Class({
     start () {
 
     },
+
+    setPageViewMove(){
+        this.pageView.getComponent(cc.PageView).enabled = false;
+    },
+    PageView_left_cb(){
+        this.pageView.getComponent(cc.PageView).enabled = true;
+        let index = this.pageView.getComponent(cc.PageView).getCurrentPageIndex();
+        index = index - 1 < 0 ? 0 : index - 1;
+        this.pageView.getComponent(cc.PageView).scrollToPage(index);
+        this.dtySetPageViewEnabled();
+    },
+    PageView_right_cb(){
+        this.pageView.getComponent(cc.PageView).enabled = true;
+        let index = this.pageView.getComponent(cc.PageView).getCurrentPageIndex();
+        index = index + 1 > 3 ? 3 : index + 1;
+        this.pageView.getComponent(cc.PageView).scrollToPage(index);
+        this.dtySetPageViewEnabled();
+    },
+    dtySetPageViewEnabled(){
+        let dty = cc.delayTime(0.5);
+        let cb= cc.callFunc(()=>{
+            this.pageView.getComponent(cc.PageView).enabled = false;
+        })
+        this.node.runAction(cc.sequence(dty,cb))
+    },
     //设置地图大小
     MapSize_cb(node){
         let size = node.string;
         let arr = size.split(",");
         this.mapdata.width = parseInt(arr[0])*PROPSIZE;
         this.mapdata.height = parseInt(arr[1])*PROPSIZE;
+       
         this.setMapSize(this.mapdata.width,this.mapdata.height)
     },
     //初始化地图
@@ -68,6 +95,8 @@ cc.Class({
     setMapSize(width,height){
         this.mapBg.width = width;
         this.mapBg.height = height;
+        this.mapBg.x = -(this.mapBg.width/2);
+        this.mapBg.y = -(this.mapBg.height/2);
     },
     //设置难度
     setDifficult(node){
@@ -131,7 +160,17 @@ cc.Class({
         this.setMapSize(this.mapdata.width, this.mapdata.height);
         this.propID = this.itemData.length;
         for (let i = 0; i < this.itemData.length; i++) {
-            this.prop = cc.instantiate(this.propGroup.children[this.itemData[i].obj.type]);
+            if(this.itemData[i].obj.type==1||this.itemData[i].obj.type==2||this.itemData[i].obj.type==3){
+                this.prop = cc.instantiate(this.prop_content.children[this.itemData[i].obj.type-1].children[0]);
+            }else if(this.itemData[i].obj.type==5){
+                this.prop = cc.instantiate(this.prop_content.children[3].children[1]);
+            }else if(this.itemData[i].obj.type==0){
+                this.prop = cc.instantiate(this.prop_content.children[3].children[0]);
+            }else if(this.itemData[i].obj.type==6){
+                this.prop = cc.instantiate(this.prop_content.children[3].children[2]);
+            }else if(this.itemData[i].obj.type==7){
+                this.prop = cc.instantiate(this.prop_content.children[3].children[3]);
+            }
             this.prop.name = `${this.itemData[i].id}_${this.itemData[i].obj.type}`;
             this.prop.parent = this.mapBg;
             this.prop.width = PROPSIZE;
@@ -148,23 +187,11 @@ cc.Class({
         let arr = this.prop.name.split("_");
         let type = arr[1];
         let id =arr[0];
-        if(type =="0"||type =="1"||type =="2"
-            ||type =="3"||type =="4"||type =="5"){
+        if(type =="0"||type =="1"||type =="2"||type =="5"){
             for(let i=0;i<this.itemData.length; i++){
                 if(this.itemData[i].id == parseInt(id)){
                     this.itemData[i].obj.value = parseInt(node.string);
                 }
-            }
-        }
-        this.updateViewValue();
-    },
-    //设置符号
-    setsimpol(node) {
-        let arr = this.prop.name.split("_");
-        let id = arr[0];
-        for(let i=0;i<this.itemData.length; i++){
-            if(this.itemData[i].id == parseInt(id)){
-                this.itemData[i].obj.simpol =parseInt(node.string);
             }
         }
         this.updateViewValue();
@@ -182,17 +209,35 @@ cc.Class({
                 simpol = this.itemData[i].obj.simpol;
             }
         }
-        switch (type) {
-            case 0:
-            case 1: prop.string = value.toString(); break;
-            case 2:
-            case 4:prop.string = this.getSimopl(simpol) + value.toString(); break;
-            case 3:
-            case 5:prop.string = value.toString() + this.getSimopl(simpol); break;
-            case 8:prop.string = simpol == 1 ? "→" : "←";break;
-            case 9:prop.string = simpol == 1 ? "→" : "←";break;
-            default:
-                break;
+        //渲染数值
+        if(type == 0 ||type == 5){
+            prop.string = value.toString(); 
+        }else if(type == 1){
+            if(simpol == 1||simpol == 2 ||simpol == 3||simpol == 4){
+                prop.string = this.getSimopl(simpol) + value.toString(); 
+            }else if (simpol == 5 ||simpol == 6){
+                prop.string = value.toString() + this.getSimopl(simpol);
+            }else if(simpol == 7){
+                prop.string = "→";
+            }
+        }else if (type == 2){
+            if(simpol == 1||simpol == 2 ||simpol == 3||simpol == 4){
+                prop.string = this.getSimopl(simpol) + value.toString(); 
+            }else if (simpol == 5 ||simpol == 6){
+                prop.string = value.toString() + this.getSimopl(simpol);
+            }else if(simpol == 7){
+                prop.string = "←";
+            }
+        }else if (type ==3){
+            if(simpol == 1){
+                prop.string = "=";
+            }else if(simpol == 2){
+                prop.string = "≠";
+            }else if(simpol == 3){
+                prop.string = ">";
+            }else if(simpol == 4){
+                prop.string = "<";
+            }
         }
     },
     //得到符号
@@ -203,22 +248,36 @@ cc.Class({
             case 2:string = "-";break;
             case 3:string = "x";break;
             case 4:string = "/";break;
-            case 5:string = ">";break;
-            case 6:string = "<";break;
-            case 7:string = "=";break;
-            case 8:string = "≠";break;
+            case 5:string = "-";break;
+            case 6:string = "/";break;
             default: string ="";break;
         }
         return string;
     },
-    //绑定道具的点击事件
-    bindPrpoEvent(){
-        for(let i=0; i<this.propGroup.childrenCount; i++){
-            let node = this.propGroup.children[i];
-            node.on("touchstart", this.clickCallBack, this);
-            node.on("touchmove", this.moveCallBack, this);
-            node.on("touchend", this.moveEndCallBack, this);
-            node.on("touchcancel", this.moveCancelCB, this);
+    bindAllProp(){
+        for(let i=0; i<this.prop_content.childrenCount; i++){
+            let node= this.prop_content.children[i];
+            for(let j=0; j<node.childrenCount; j++){
+                let prop = node.children[j];
+                if(i==0||i==1||i==2){
+                    prop.name = `${i+1}_${j+1}`;
+                }else if(i==3){
+                    if(j == 0){
+                        prop.name = `0_0`;
+                    }else if(j == 1){
+                        prop.name = `5_1`;
+                    }else if(j == 2){
+                        prop.name = `6_0`;
+                    }else if(j == 3){
+                        prop.name = `7_0`;
+                    }
+                    
+                }
+                prop.on("touchstart", this.clickCallBack, this);
+                prop.on("touchmove", this.moveCallBack, this);
+                prop.on("touchend", this.moveEndCallBack, this);
+                prop.on("touchcancel", this.moveCancelCB, this);
+            }
         }
     },
     //*************点击回调**************
@@ -226,6 +285,7 @@ cc.Class({
         this.prop =  cc.instantiate(event.target);
         this.prop.on("touchstart", this.clickProp, this);
         this.prop.parent = this.mapBg;
+        this.prop.name = event.target.name;
         this.prop.width = PROPSIZE;
         this.prop.height = PROPSIZE;
         cc.log("eventevent",event.target,this.prop);
@@ -243,19 +303,16 @@ cc.Class({
 
     moveCancelCB(event) {
         this.setPropPosition(this.prop, this.prop.position);
+        let arr = this.prop.name.split("_");
         let itemData = {};
         itemData.id = this.propID;
         itemData.obj = {},
         itemData.obj.x = this.prop.x;
         itemData.obj.y = this.prop.y;
-        itemData.obj.type = parseInt(this.prop.name);
+        itemData.obj.type = parseInt(arr[0]);
         itemData.obj.value = parseInt(this.editbox_value.string);
-        if(itemData.obj.type == 1){
-            itemData.obj.simpol = 2;
-        }else{
-            itemData.obj.simpol = parseInt(this.editbox_simpol.string);
-        }
-        this.prop.name = `${this.propID}_${parseInt(this.prop.name)}`;
+        itemData.obj.simpol = parseInt(arr[1]);
+        this.prop.name = `${this.propID}_${arr[0]}`;
         this.itemData.push(itemData);
         this.updateViewValue();
         this.propID++;

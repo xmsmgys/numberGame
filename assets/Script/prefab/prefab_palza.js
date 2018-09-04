@@ -33,7 +33,7 @@ cc.Class({
     },
     initEditLevel(){
         let Development = this.curLogic.get("Development");
-        this.editlevel.active = Development;
+        this.editlevel.active = true;
     },
     initLevels(event){
         this.curLogic.set("levelListState",1);
