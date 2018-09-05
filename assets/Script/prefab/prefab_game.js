@@ -14,6 +14,7 @@ cc.Class({
         ruleProItem:[cc.Node],
         rule_content:cc.Node,
         allPass:cc.Node,
+        tip:cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -45,6 +46,7 @@ cc.Class({
         this.map.height = this.mapdata.height;
         this.map.x = -(this.map.width/2);
         this.map.y = -(this.map.height/2);
+        this.tip.y = this.map.y-40;
         this.map.removeAllChildren();
         let itemdata = JSON.parse(JSON.stringify(this.mapdata.itemData));
         for(let i=0; i<itemdata.length; i++){

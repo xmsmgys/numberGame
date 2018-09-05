@@ -8,10 +8,11 @@ cc.Class({
         editbox_level:cc.EditBox,
         editbox_value:cc.EditBox,
         editbox_difficult:cc.EditBox,
-        
+        editbox_tip : cc.EditBox,
         prop_content:cc.Node,
         pageView:cc.Node,
         mapBg:cc.Node,
+        gametip:cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -72,6 +73,10 @@ cc.Class({
        
         this.setMapSize(this.mapdata.width,this.mapdata.height)
     },
+    tip_cb(node){
+        this.mapdata.tip = node.string;
+        this.gametip.getComponent(cc.Label).string = node.string;
+    },
     //初始化地图
     initMap(){
         this.difficultData = this.curLogic.get("difficultData");
@@ -82,6 +87,7 @@ cc.Class({
         this.level = this.mapdata.level;
         this.itemData = this.mapdata.itemData;
         this.setMapSize(this.mapdata.width,this.mapdata.height);
+        this.gametip.getComponent(cc.Label).string = this.mapdata.tip;
         this.drawItem();
         this.inteditBoxString();
     },
@@ -90,6 +96,7 @@ cc.Class({
         this.editbox_level.string = this.mapdata.level;
         this.editbox_mapSize.string = `${this.mapdata.width/PROPSIZE},${this.mapdata.height/PROPSIZE}`;
         this.editbox_difficult.string = this.difficult;
+        this.editbox_tip.string = this.mapdata.tip;
     },
     //设置地图宽高
     setMapSize(width,height){
@@ -97,6 +104,7 @@ cc.Class({
         this.mapBg.height = height;
         this.mapBg.x = -(this.mapBg.width/2);
         this.mapBg.y = -(this.mapBg.height/2);
+        this.gametip.y = this.mapBg.y-40;
     },
     //设置难度
     setDifficult(node){
@@ -139,6 +147,7 @@ cc.Class({
             }
         }
         this.mapdata.level = this.level;            //如果没有，则
+        this.mapdata.tip = "";
         this.mapdata.itemData = this.itemData;
         this.mapdata.height = this.mapBg.height;
         this.mapdata.width = this.mapBg.width;
