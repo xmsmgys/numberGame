@@ -1333,7 +1333,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -128,
+      "x": -155,
       "y": 530
     },
     "_skewX": 0,
@@ -1387,7 +1387,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 101,
+      "x": 146,
       "y": 0
     },
     "_skewX": 0,
@@ -1544,7 +1544,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -128,
+      "x": -161,
       "y": 328
     },
     "_skewX": 0,
@@ -1590,7 +1590,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 160,
-      "height": 40
+      "height": 45
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1598,7 +1598,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 119,
+      "x": 159,
       "y": 0
     },
     "_skewX": 0,
@@ -1617,7 +1617,7 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "",
+    "_string": "开学啦",
     "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],
@@ -1632,9 +1632,9 @@
     },
     "_N$returnType": 0,
     "_N$inputFlag": 5,
-    "_N$inputMode": 6,
-    "_N$fontSize": 29,
-    "_N$lineHeight": 40,
+    "_N$inputMode": 0,
+    "_N$fontSize": 20,
+    "_N$lineHeight": 20,
     "_N$fontColor": {
       "__type__": "cc.Color",
       "r": 0,
@@ -1651,7 +1651,7 @@
       "b": 127,
       "a": 255
     },
-    "_N$maxLength": 8,
+    "_N$maxLength": 30,
     "_N$stayOnTop": false
   },
   {
@@ -1755,8 +1755,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -133,
-      "y": 467
+      "x": -159,
+      "y": 480
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1966,8 +1966,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -115,
-      "y": 422
+      "x": -141,
+      "y": 436
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2177,8 +2177,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -129,
-      "y": 381
+      "x": -155,
+      "y": 390
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2915,8 +2915,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 117,
-      "y": 465
+      "x": 264.9,
+      "y": 589.7
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3177,7 +3177,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 119,
+      "x": 267,
       "y": 528
     },
     "_skewX": 0,

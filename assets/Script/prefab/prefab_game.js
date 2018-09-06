@@ -47,6 +47,7 @@ cc.Class({
         this.map.x = -(this.map.width/2);
         this.map.y = -(this.map.height/2);
         this.tip.y = this.map.y-40;
+        this.tip.getComponent(cc.Label).string =  this.mapdata.tip;
         this.map.removeAllChildren();
         let itemdata = JSON.parse(JSON.stringify(this.mapdata.itemData));
         for(let i=0; i<itemdata.length; i++){
