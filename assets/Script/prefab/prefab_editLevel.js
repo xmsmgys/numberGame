@@ -167,6 +167,8 @@ cc.Class({
     drawItem() {
         this.mapBg.removeAllChildren();
         this.setMapSize(this.mapdata.width, this.mapdata.height);
+        this.editbox_tip.string = this.mapdata.tip;
+        this.gametip.getComponent(cc.Label).string = this.mapdata.tip;
         this.propID = this.itemData.length;
         for (let i = 0; i < this.itemData.length; i++) {
             if(this.itemData[i].obj.type==1||this.itemData[i].obj.type==2||this.itemData[i].obj.type==3){
