@@ -239,7 +239,7 @@ cc.Class({
             }
         }else if (type ==3){
             if(simpol == 1){
-                prop.string = "=";
+                prop.string = "="
             }else if(simpol == 2){
                 prop.string = "≠";
             }else if(simpol == 3){
@@ -247,6 +247,7 @@ cc.Class({
             }else if(simpol == 4){
                 prop.string = "<";
             }
+            prop.string = prop.string+ value.toString();
         }
     },
     //得到符号
