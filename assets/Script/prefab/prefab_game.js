@@ -112,6 +112,8 @@ cc.Class({
                 str.string = value.toString() + this.getSimopl(simpol);
             }else if(simpol == 7){
                 str.string = "→";
+            }else if(simpol == 8){
+                str.string = "";
             }
         }else if (type == 2){
             if(simpol == 1||simpol == 2 ||simpol == 3||simpol == 4){
@@ -272,15 +274,16 @@ cc.Class({
      */
     setRoleValue(type, value, simpol) {
         let tempValue = this.roleVale;
-        if(type == 1&&simpol == 8){
-            this.isprotective = true;
-                return;
+        if(this.isprotective){
+            if(type == 1&&simpol == 8){
+                this.isprotective = true;
+            }else{
+                this.isprotective = false;
+            }
+            return;
         }
         if (type == 1) {                        //对主角操作
-            if(this.isprotective){
-                this.isprotective = false;
-                return;
-            }
+            
             if(simpol == 1){
                 this.roleVale = this.roleVale + value;
             }else if(simpol == 2){
@@ -298,6 +301,9 @@ cc.Class({
                 this.role.getChildByName("label").getComponent(cc.Label).string = this.roleVale;
                 this.comparisonSymbol();
                 return;   
+            }else if(simpol == 8){
+                this.isprotective = true;
+                return;
             }
             this.ani_propString(this.role,tempValue, value, simpol,type,this.roleVale);
             this.comparisonSymbol();
@@ -327,7 +333,7 @@ cc.Class({
                         }
                         return;
                     }
-                    this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
+                    this.prop_dic[key].obj.value = this.prop_dic[key].obj.value < 0 ? 0 : this.prop_dic[key].obj.value;
                      //在这边做动画
                     let node = this.getBreakNode(this.prop_dic[key].id);
                     this.ani_propString(node,tempValue,value,simpol,type,this.prop_dic[key].obj.value);
