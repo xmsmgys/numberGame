@@ -58,7 +58,7 @@ cc.Class({
         this.dtySetPageViewEnabled();
     },
     dtySetPageViewEnabled(){
-        let dty = cc.delayTime(1);
+        let dty = cc.delayTime(0.2);
         let cb= cc.callFunc(()=>{
             this.pageView.getComponent(cc.PageView).enabled = false;
         })
